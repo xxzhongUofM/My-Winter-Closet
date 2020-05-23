@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title> Wintering In Ann Arbor</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    </title>
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="static/js/priceSort.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  </head>
+  <body >
+    <div id='app'>
+      <nav class="navbar navbar-default">
+        <div class="container">
+          <div class="navbar-header">
+            <h3>Winter Closet Sales</h3>
+          </div>
+        </div>
+      </nav>
+      <div class = "container">
+        <div class = "row searchbar" >
+          <div class = "col-lg-12 col-md-12 col-sm-12">
+            <h4>Categories: </h4>
+          </div>
+        </div>
+        <div class="categories">
+          <button type="button" v-on:click="addRemoveCategory('Sweatshirts', 0)" v-bind:class="[button_status[0] ? 'btn btn-primary' : 'btn btn-default']">Sweatshirts</button>
+          <button type="button" v-on:click="addRemoveCategory('Jackets', 1)" v-bind:class="[button_status[1] ? 'btn btn-primary' : 'btn btn-default']">Jackets</button>
+          <button type="button" v-on:click="addRemoveCategory('Coats', 2)" v-bind:class="[button_status[2] ? 'btn btn-primary' : 'btn btn-default']">Coats</button>
+          <button type="button" v-on:click="addRemoveCategory('Shoes', 3)" v-bind:class="[button_status[3] ? 'btn btn-primary' : 'btn btn-default']">Shoes</button>
+          <button type="button" v-on:click="addRemoveCategory('Shirts', 4)" v-bind:class="[button_status[4] ? 'btn btn-primary' : 'btn btn-default']">Shirts</button>
+          <button type="button" v-on:click="addRemoveCategory('Bottoms', 5)" v-bind:class="[button_status[5] ? 'btn btn-primary' : 'btn btn-default']">Bottoms</button>
+          <button type="button" v-on:click="addRemoveCategory('Accessories', 6)" v-bind:class="[button_status[6] ? 'btn btn-primary' : 'btn btn-default']">Accessories</button>
+          <button type="button" v-on:click="addRemoveCategory('Other', 7)" v-bind:class="[button_status[7] ? 'btn btn-primary' : 'btn btn-default']">Other</button>
+        </div>
+        <div class = "row searchbar" >
+          <div class = "col-lg-12 col-md-12 col-sm-12">
+            <h4>Department: </h4>
+          </div>
+        </div>
+        <div class="type">
+          <button type="button" v-on:click="addRemoveDepartment('Men', 8)" v-bind:class="[button_status[8] ? 'btn btn-primary' : 'btn btn-default']">Men</button>
+          <button type="button" v-on:click="addRemoveDepartment('Women', 9)" v-bind:class="[button_status[9] ? 'btn btn-primary' : 'btn btn-default']">Women</button>
+          <button type="button" v-on:click="addRemoveDepartment('Kids', 10)" v-bind:class="[button_status[10] ? 'btn btn-primary' : 'btn btn-default']">Kids</button>
+        </div>
+        <div class = "row searchbar" >
+          <div class = "col-lg-12 col-md-12 col-sm-12">
+            <h4>Price: </h4>
+          </div>
+        </div>
+        <div id="slider-container"></div>
+        <p>
+            <label for="amount">Price range:</label>
+            <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
+        </p>
+        <div class="type">
+          <button type="button" v-on:click="togglePriceSorting()" v-bind:class="[button_status[11] ? 'btn btn-primary' : 'btn btn-default']">Low to High</button>
+          <button type="button" v-on:click="togglePriceSorting()" v-bind:class="[button_status[11] ? 'btn btn-default' : 'btn btn-primary']">High to Low</button>
+        </div>
+        <div v-if="filtered_items.length == 0"> No items found. </div>
+        <div class="grid_container">
+          <div v-for="(item, index) in filtered_items" class="grid_item">
+            <div class="product_image">
+              <img class="image" v-bind:src="item['product_image']">
+              <a class="buy" v-bind:href="item['product_link']">Buy</a>
+            </div>
+            <div><b>Product:</b> {{item['product_name']}}</div>
+            <div><b>Brand:</b> {{item['brand']}}</div>
+            <div class="sale_price"><b>Sale Price:</b> ${{item['sale_price']}}</div>
+            <div><b>Retail Price:</b> {{item['retail_price']}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="static/js/script.js"></script>
+  </body>
+</html>

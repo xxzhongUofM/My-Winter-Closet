@@ -1,0 +1,18 @@
+How to run our final project.
+
+Note: Python 3 is needed. https://www.python.org/downloads/
+
+1) Open terminal and navigate to root directory of project.
+
+2) python3 scrapper.py
+
+3) Navigate to http://localhost:5000/. If that doesn't work, change the port number to whatever your terminal says.
+   Example: Running on http://127.0.0.1:5000/ (Last 4 digits is the port number).
+
+The following dependicies may be needed, depending on whether you system as them installed or not.
+
+pip3 install flask
+
+pip3 install beautifulsoup4
+
+If you run into an internal server error, restart the flask app and press command/ctrl + shift + R to perform a hard refresh.
